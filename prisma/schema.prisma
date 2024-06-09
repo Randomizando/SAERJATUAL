@@ -1,0 +1,266 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Parametros {
+  id                                    Int       @id @default(autoincrement())
+  random                                String
+  cep_invalido                          Boolean   @default(false)
+  data_limite_pgto_antecipado_anuidade  DateTime?
+  percent_desc_pgto_antecipado_anuidade Int
+  taxa_pgto_atrasado_anuidade           Int
+  parcelamento_permitido_anuidade       String
+  data_limite_pgto_antecipado_JAER      DateTime?
+  percent_desc_pgto_antecipado_JAER     Int
+  taxa_pgto_atrasado_JAER               Int
+  parcelamento_permitido_JAER           String
+  presidente_pode_se_reeleger           Boolean
+  demais_podem_se_reeleger              Boolean
+  duracao_mandato                       Int
+  exite_listas_imediato                 Boolean
+  quantidade_linhas_listas              Int
+  acesso_externo_sis                    Boolean
+  endereco_IP_primario                  String
+  endereco_IP_secundario                String
+  permitir_dado_invalido                Boolean?  @default(false)
+  assunto_email_aniversario             String?
+  nome_email_remetente                  String?
+  endereco_email_remetente              String?
+}
+
+model Empresa {
+  id                            Int      @id @default(autoincrement())
+  cod_empresa                   String?
+  tipo_empresa                  String?
+  patrocinadora                 Boolean?
+  faculdade_anestesiologia      Boolean?
+  empresa_ativa                 Boolean?
+  cnpj                          String?
+  razao_social                  String?
+  nome_fantasia                 String?
+  cep                           String?
+  logradouro                    String?
+  numero                        String?
+  complemento                   String?
+  cidade                        String?
+  uf                            String?
+  pais                          String?
+  bairro                        String?
+  telefone_comercial            String?
+  tratamento_contato_primario   String?
+  nome_contato_primario         String?
+  cargo_contato_primario        String?
+  email_contato_primario        String?
+  telefone_contato_primario     String?
+  tratamento_contato_secundario String?
+  nome_contato_secundario       String?
+  cargo_contato_secundario      String?
+  email_contato_secundario      String?
+  telefone_contato_secundario   String?
+  home_page                     String?
+  inscricao_estadual            String?
+  inscricao_municipal           String?
+  observacoes                   String?
+}
+
+model Tabelas {
+  id                             Int     @id @default(autoincrement())
+  codigo_tabela                  String
+  ocorrencia_tabela              String
+  complemento_ocorrencia_selecao String? @db.LongText
+  ocorrencia_ativa               Boolean
+}
+
+model Associados {
+  id                                   Int       @id @default(autoincrement())
+  data_nascimento                      DateTime?
+  data_inicio_especializacao           DateTime?
+  data_previsao_conclusao              DateTime?
+  data_ultimo_envio_email_aniversario  DateTime?
+  comprovante_cpf                      String?
+  numero_proposta_SBA                  BigInt?
+  matricula_SAERJ                      Int?
+  matricula_SBA                        Int?
+  situacao                             String?
+  uf_crm                               String?
+  crm                                  String?
+  nome_completo                        String?
+  cpf                                  String?
+  sexo                                 String?
+  nome_profissional                    String?
+  categoria                            String?
+  cep                                  String?
+  logradouro                           String?
+  numero                               String?
+  complemento                          String?
+  bairro                               String?
+  cidade                               String?
+  uf                                   String?
+  pais                                 String?
+  telefone_celular                     String?
+  telefone_residencial                 String?
+  email                                String?
+  nome_instituicao_ensino_graduacao    String?
+  ano_conclusao_graduacao              String?
+  residencia_mec_cnrm                  String?
+  nivel_residencia                     String?
+  nome_hospital_mec                    String?
+  uf_prm                               String?
+  comprovante_endereco                 String?
+  carta_indicacao_2_membros            String?
+  declaracao_hospital                  String?
+  diploma_medicina                     String?
+  certidao_quitacao_crm                String?
+  certificado_conclusao_especializacao String?
+  declaro_verdadeiras                  String?
+  declaro_quite_SAERJ                  String?
+  pendencias_SAERJ                     String?
+  nome_presidente_regional             String?
+  sigla_regional                       String?
+  senha                                String?
+}
+
+model Adicionais_SAERJ {
+  //alterado adicionais_saerj hospital_2 => nome_responsavel 
+  // `````` => matricula_saerj => int
+  id                    Int       @id @default(autoincrement())
+  matricula_saerj       Int?
+  admissao_saerj        DateTime?
+  categoria_saerj       String?
+  situacao              String?
+  cooperativa           String?
+  nome_pai              String?
+  nome_mae              String?
+  tsa                   String?
+  observacao_1          String?
+  observacao_2          String?
+  observacao_3          String?
+  hospital_1            String?
+  nome_responsavel      String?
+  tratamento            String?
+  nacionalidade         String?
+  foto_associado        String?
+  cet_data_inicio       String?
+  cet_data_fim          String?
+  ano_ult_pgto_sba      String?
+  cet                   String?
+  ano_ult_pgto_regional String?
+  cat_saerj             String?
+  declaro_verdadeiras   Boolean?
+}
+
+model Pagamentos {
+  id                    Int       @id @default(autoincrement())
+  matricula_saerj       String
+  tipo_pagamento        String
+  forma_pagamento       String?
+  ano_anuidade          String?
+  data_processamento    DateTime? @default(now())
+  data_pagto_unico      DateTime?
+  valor_pagto_unico     Decimal?  @db.Decimal(10, 2)
+  data_pagto_parcela_1  DateTime?
+  valor_pagto_parcela_1 Decimal?  @db.Decimal(10, 2)
+  data_pagto_parcela_2  DateTime?
+  valor_pagto_parcela_2 Decimal?  @db.Decimal(10, 2)
+  data_pagto_parcela_3  DateTime?
+  valor_pagto_parcela_3 Decimal?  @db.Decimal(10, 2)
+}
+
+model Protocolos {
+  id                     Int       @id @default(autoincrement())
+  assunto_protocolo      String?   @db.VarChar(255)
+  tipo_protocolo         String?
+  remetente              String?
+  destinatario           String?
+  data_recebimento       DateTime?
+  data_envio             DateTime?
+  meio_recebimento       String?
+  meio_envio             String?
+  quem_redigiu_envio     String?
+  entregue_em_maos       Boolean?
+  num_protocolo          String?
+  obrigatoria_resp_receb Boolean?
+  anexos                 String?
+  anexos2                String?
+  data_encerramento      DateTime?
+  usuario_encerramento   String?
+}
+
+model Votacao {
+  id                  Int    @id @default(autoincrement())
+  matricula_saerj     String
+  data_votacao_inicio String
+  data_votacao_fim    String
+  chapas              Json
+  status              Status @default(ATIVA)
+}
+
+model Voto {
+  id         Int    @id @default(autoincrement())
+  nome_chapa String
+  usuario_id Int
+  votacao_id Int
+}
+
+model Chapas_Eleicoes {
+  id        Int   @id @default(autoincrement())
+  numero_eleicao   Int?
+  titulo_chapa     String?   @db.VarChar(50)
+  descricao_chapa  String?  @db.VarChar(255)
+  quantidade_votos Int?
+  chapa_vencedora  Boolean? @default(false)
+
+  eleicao_id Eleicoes @relation(fields: [eleicoesId], references: [id])
+  chapa_id Chapas @relation(fields: [chapasId], references: [id])
+
+  eleicoesId Int
+  chapasId   Int
+}
+
+model Chapas {
+  id            Int    @id @default(autoincrement())
+  nome_chapa    String
+  membros_chapa Json
+
+  eleicoesId      Int?
+  Chapas_Eleicoes Chapas_Eleicoes[]
+}
+
+model Diretorias {
+  id              Int    @id @default(autoincrement())
+  numero_eleicao  Int
+  cod_chapa       String @db.VarChar(255)
+  matricula_saerj Int
+  candidato_cargo String @db.VarChar(255)
+}
+
+model Eleicoes {
+  id             Int      @id @default(autoincrement())
+  numero_eleicao String
+  titulo_eleicao String   @db.VarChar(255)
+  votacao_inicio DateTime
+  votacao_fim    DateTime
+  mandato_inicio DateTime
+  mandato_fim    DateTime
+  status         Status   @default(INATIVA)
+  chapas         Json?
+
+  Chapas_Eleicoes Chapas_Eleicoes[]
+}
+
+model Logs {
+  id             Int      @id @default(autoincrement())
+  cod_log        String
+  ocorrencia_log String
+  data_hora_log  DateTime
+}
+
+enum Status {
+  ATIVA
+  INATIVA
+}

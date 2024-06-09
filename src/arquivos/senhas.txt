@@ -1,0 +1,26 @@
+{
+            VPN
+VPN: 187.102.165.182:10443
+user: saerj
+pass: CI1isMlJ"wv^9+DU\q|A
+pass: CI1isMlJ"wv^9+DU\q|A
+}
+
+ssh informaker@10.20.10.183 -p 22
+
+Lamp-01                                 Lamp-02
+Ip: 10.20.0.22                          Ip: 10.20.0.53
+User: informaker                        User: informaker
+Senha: In@2023#er                       Senha: In@2023#er
+
+database
+saerj
+In@2023#er
+
+para servidor ficar rodando em segundo plano  PM2 (GLOBAL)
+npm i @mui/x-date-pickers
+npm i jspdf
+
+ "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.1",
+    "jspdf-react": "^1.0.11",

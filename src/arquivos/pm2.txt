@@ -1,0 +1,61 @@
+Para usar o PM2 com um aplicativo Next.js, você precisa seguir alguns passos simples. Certifique-se de que o PM2 está instalado globalmente antes de começar:
+
+bash
+code terminal
+npm install -g pm2
+Aqui estão os passos para usar o PM2 com um aplicativo Next.js:
+
+Instale o PM2 globalmente (se ainda não estiver instalado):
+
+bash
+code terminal
+npm install -g pm2
+Navegue até o diretório do seu projeto Next.js:
+
+bash
+code terminal
+cd /caminho/do/seu/projeto
+Inicie o aplicativo usando o PM2:
+
+bash
+code terminal
+pm2 start npm --name saerj -- run dev
+Substitua "nome-do-app" pelo nome desejado para o seu aplicativo.
+
+Salve a configuração do PM2 para persistir entre reinicializações:
+
+bash
+code terminal
+pm2 save
+Configure o PM2 para iniciar na inicialização do sistema:
+
+bash
+code terminal
+pm2 startup
+Siga as instruções exibidas no console para configurar o PM2 como um serviço de inicialização.
+
+Visualize os logs do aplicativo:
+
+bash
+code terminal
+pm2 logs nome-do-app
+Isso permitirá que você veja os logs de saída do aplicativo.
+
+Outros comandos úteis do PM2:
+
+Parar o aplicativo:
+
+bash
+code terminal
+pm2 stop nome-do-app
+Reiniciar o aplicativo:
+
+bash
+code terminal
+pm2 restart nome-do-app
+Parar e remover o aplicativo do PM2:
+
+bash
+code terminal
+pm2 delete nome-do-app
+Esses passos devem ajudar a usar o PM2 para gerenciar e manter em execução um aplicativo Next.js em um ambiente de produção. Certifique-se de ajustar os comandos de acordo com as necessidades específicas do seu projeto.
