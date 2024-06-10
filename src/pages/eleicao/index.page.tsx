@@ -30,22 +30,17 @@ import { ArrowBendDownLeft } from 'phosphor-react'
 
 type Votation = {
   data: any
-  // alreadyVoted: any
 }
 
 export default function Votacao({ data }: Votation) {
-  // const [userAlreadyVoted, setUserAlreadyVoted] = useState(alreadyVoted)
   const [open, setOpen] = useState(true)
   const [showVotation, setShowVotation] = useState(false)
   const [showVoteReceipt, setShowVoteReceipt] = useState(false)
-
   const [selected, setSelected] = useState('' as any)
   const [votation, setVotation] = useState(data)
-
   const router = useRouter()
   const today = new Date()
   const yesterday = today.setDate(today.getDate() - 1) // sem esse cálculo o dia de encerramento é considerado já encerrado
-
   const votationIsOver = new Date(votation?.votacao_fim) < new Date(yesterday)
 
   const handleClick = (item: string) => {
@@ -57,16 +52,8 @@ export default function Votacao({ data }: Votation) {
   }
 
   const genareteVoteReceipt = async () => {
-    // if (userAlreadyVoted) {
-    //   alert('Você já votou nessa eleição')
-    //   setShowVotation(false)
-    //   return
-    // }
-
     setShowVoteReceipt(true)
     setShowVotation(false)
-    // setUserAlreadyVoted(true)
-
     await api.post('/votos/cadastro', {
       nome_chapa: selected,
       votacao_id: votation.id,
@@ -79,7 +66,7 @@ export default function Votacao({ data }: Votation) {
       nome: 'Roberto da Silva',
       cpf: '857.260.010-87',
       matricula_saerj: votation?.titulo_eleicao,
-      chapaVote: selected, // || userAlreadyVoted.nome_chapa,
+      chapaVote: selected,
       autenticacao: '0x0000000',
     })
   }
@@ -92,7 +79,6 @@ export default function Votacao({ data }: Votation) {
           expandend: !item.expandend,
         }
       }
-
       return item
     })
 
@@ -116,11 +102,23 @@ export default function Votacao({ data }: Votation) {
     setSelected('')
   }
 
-  // useEffect(() => {
-  //   if (userAlreadyVoted) {
-  //     setShowVoteReceipt(true)
-  //   }
-  // }, [userAlreadyVoted])
+  useEffect(() => {
+    // Adiciona a verificação de categoria no frontend
+    const verifyUserCategory = async () => {
+      try {
+        const response = await api.get('/api/user')
+        const user = response.data
+
+        if (user.categoria !== 'Ativo' && user.categoria !== 'Remido') {
+          router.push('/not-authorized')
+        }
+      } catch (error) {
+        console.error('Erro ao verificar categoria do usuário:', error)
+      }
+    }
+
+    verifyUserCategory()
+  }, [router])
 
   if (showVoteReceipt) {
     return (
@@ -169,9 +167,7 @@ export default function Votacao({ data }: Votation) {
             </Typography>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Chapa Votada: {selected}
-              {/* || userAlreadyVoted.nome_chapa } */}
             </Typography>
-
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Autentication: 0x0000000
             </Typography>
@@ -202,18 +198,18 @@ export default function Votacao({ data }: Votation) {
           href="/"
           style={{
             textDecoration: 'none',
-            fontFamily: 'Roboto',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            marginBottom: '1rem',
-            color: '#000',
-          }}
-        >
-          <ArrowBendDownLeft size={32} />
-          Retornar
-        </Link>
-      </Box>
+              fontFamily: 'Roboto',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              marginBottom: '1rem',
+              color: '#000',
+            }}
+          >
+            <ArrowBendDownLeft size={32} />
+            Retornar
+          </Link>
+        </Box>
 
       <h1 style={{ textAlign: 'center' }}>
         Votação {votation?.titulo_eleicao}
@@ -239,15 +235,6 @@ export default function Votacao({ data }: Votation) {
                 {new Date(votation?.votacao_fim).toLocaleDateString()}
               </Typography>
 
-              {/* {userAlreadyVoted ? (
-                <Typography
-                  style={{ marginTop: 10 }}
-                  variant="h6"
-                  component="h5"
-                >
-                  Você já votou nessa eleição
-                </Typography>
-              ) : ( */}
               <PopUpButton
                 style={{
                   backgroundColor: 'rgb(82, 128, 53)',
@@ -444,19 +431,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
     if (!data) return { props: { data: null } }
 
-    // const alreadyVoted = await prisma.voto.findFirst({
-    //   where: {
-    //     usuario_id: 1,
-    //     votacao_id: data?.id,
-    //   },
-    // })
-
     data = JSON.parse(JSON.stringify(data))
 
     return {
       props: {
         data,
-        // alreadyVoted,
       },
     }
   } catch (error) {
